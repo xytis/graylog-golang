@@ -66,8 +66,11 @@ func (g *Gelf) Log(message string) {
 		log.Printf("Uh oh! %s", err)
 		return
 	}
+	g.RawLog([]byte(message))
+}
 
-	compressed := g.Compress([]byte(message))
+func (g *Gelf) RawLog(buf []byte) {
+	compressed := g.Compress(buf)
 
 	chunksize := g.Config.MaxChunkSizeWan
 	length := compressed.Len()
